@@ -27,9 +27,14 @@ THEN I am able to successfully create, update, and delete data in my database
 ```
 ## Walkthrough Video Link
 Insert Link***
+https://drive.google.com/file/d/1vakY6oy64XEcSgu1OTBdbU1UcdennhnV/view
 
 ## Instructions 
 Create schema from mysql shell 
 Seed database from command line using npm run seed
 run server using node server.js
 see video for rest of instructions
+
+## License 
+ MIT
+© 2023 malloryklar0516
