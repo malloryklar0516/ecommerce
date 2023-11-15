@@ -28,13 +28,13 @@ router.get('/:id', (req, res) => {
   // be sure to include its associated Product data
   Tag.findOne({
     where: {
-        id: req.params.id
+        id: req.params.id,
     },
-    attributes: ['id', 'tag_name'],
+    // attributes: ['id', 'tag_name'],
     include: [
         {
             model: Product,
-            attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+            through: ProductTag 
         }
     ]
 })
@@ -52,7 +52,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  // create a new tag
+  // create a new tag with tag name
   Tag.create({
     tag_name: req.body.tag_name
 })
@@ -65,6 +65,22 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  Tag.update(req.body, {
+    where: {
+        id: req.params.id
+    }
+})
+    .then(tagData => {
+        if (!tagData[0]) {
+            res.status(404).json({ message: 'No tag found with this id' });
+            return;
+        }
+        res.json(tagData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
 });
 
 router.delete('/:id', (req, res) => {

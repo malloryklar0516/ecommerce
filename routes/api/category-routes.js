@@ -25,7 +25,10 @@ router.get('/', (req, res) => {
 
 router.get('/:id',  (req, res) => {
 
-  Category.findAll({
+  Category.findOne({
+    where: {
+        id: req.params.id
+    },
     attributes: ['id', 'category_name'],
     include: [
         {
@@ -34,7 +37,12 @@ router.get('/:id',  (req, res) => {
         }
     ]
 })
-    .then(categories => res.json(categories))
+    .then(categories => {
+        if (!categories) {
+            res.status(404).json({message: 'No category with that id'});
+            return;}
+            res.json(categories);
+        })
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
@@ -48,7 +56,7 @@ router.post('/', (req, res) => {
   // create a new category
   const newCategory = Category.create({
     category_name: req.body.category_name})
-    .then(
+    .then(newCategory=>
       res.json(newCategory)
     ).catch(err => {
       console.log(err);
