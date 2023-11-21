@@ -33,6 +33,7 @@ router.get('/:id', (req, res) => {
     // ,
     include: [
         {
+            //include associated procucts using ProductTag model 
             model: Product,
             through: ProductTag,
         }
@@ -50,7 +51,7 @@ router.get('/:id', (req, res) => {
         res.status(500).json(err);
     });
 });
-//create new tag
+//create new tag 
 router.post('/', (req, res) => {
   Tag.create({
     tag_name: req.body.tag_name})
@@ -63,6 +64,9 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  // req.body should look like { 
+// tag_name: "purple"
+  // } 
   Tag.update(req.body, {
     where: {
         id: req.params.id
