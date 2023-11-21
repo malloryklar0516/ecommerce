@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
         }
     ]
 })
-    .then(tagData => res.json(tagData))
+    .then(tags => res.json(tags))
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
@@ -30,33 +30,31 @@ router.get('/:id', (req, res) => {
     where: {
         id: req.params.id,
     },
-    // attributes: ['id', 'tag_name'],
+    // ,
     include: [
         {
             model: Product,
-            through: ProductTag 
+            through: ProductTag,
         }
     ]
 })
-    .then(tagData => {
-        if (!tagData) {
+    .then(tags => {
+        if (!tags) {
             res.status(404).json({ message: 'No tag found with this id' });
             return;
         }
-        res.json(tagData);
+        res.json(tags);
     })
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
     });
 });
-
+//create new tag
 router.post('/', (req, res) => {
-  // create a new tag with tag name
   Tag.create({
-    tag_name: req.body.tag_name
-})
-    .then(newTag => res.json(newTag))
+    tag_name: req.body.tag_name})
+    .then(tag => res.json(tag))
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
@@ -70,12 +68,12 @@ router.put('/:id', (req, res) => {
         id: req.params.id
     }
 })
-    .then(tagData => {
-        if (!tagData[0]) {
-            res.status(404).json({ message: 'No tag found with this id' });
+    .then(tag => {
+        if (!tag[0]) {
+            res.status(404).json({ message: 'No tag found with id' });
             return;
         }
-        res.json(tagData);
+        res.json(tag);
     })
     .catch(err => {
         console.log(err);
@@ -84,18 +82,18 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // delete on tag by its `id` value
+  // delete tag by its id value
   Tag.destroy({
     where: {
         id: req.params.id
     }
 })
-    .then(deleteTagData => {
-        if (!deleteTagData) {
-            res.status(404).json({ message: 'No tag found with this id' });
+    .then(deletedTag => {
+        if (!deletedTag) {
+            res.status(404).json({ message: 'Did not delete because no tag found with this id.' });
             return;
         }
-        res.json(deleteTagData);
+        res.json(deletedTag);
     })
     .catch(err => {
         console.log(err);
